@@ -1,8 +1,11 @@
 import express from "express";
 import config from "./config/config.js";
 import dbConnect from "./config/database-config.js";
+import authRoutes from "./routes/auth-route.js";
 
 const app = express();
+
+app.use("/api/auth", authRoutes);
 
 const startServer = async () => {
   try {
