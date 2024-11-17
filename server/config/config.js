@@ -8,6 +8,7 @@ const _config = {
   nodeEnv: process.env.NODE_ENV,
   mailtrapToken: process.env.MAILTRAP_TOKEN,
   mailtrapEndPoint: process.env.MAILTRAP_ENDPOINT,
+  frontendUrl: process.env.FRONTEND_DOMAIN,
 };
 
 const config = {

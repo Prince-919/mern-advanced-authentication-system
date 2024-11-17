@@ -1,7 +1,13 @@
-import { User } from "../models/auth-model.js";
 import bcrypt from "bcryptjs";
+import crypto from "node:crypto";
+import { User } from "../models/auth-model.js";
 import { generateTokenAndSetCookie } from "../utils/generateTokenAndSetCookie.js";
-import { sendVerificationEmail, sendWelcomeEmail } from "../mailtrap/emails.js";
+import {
+  sendPasswordResetEmail,
+  sendVerificationEmail,
+  sendWelcomeEmail,
+} from "../mailtrap/emails.js";
+import config from "../config/config.js";
 
 class AuthController {
   static async signup(req, res) {
@@ -123,6 +129,36 @@ class AuthController {
     res
       .status(200)
       .json({ success: true, message: "Logged out successfully." });
+  }
+
+  static async forgotPassword(req, res) {
+    const { email } = req.body;
+    try {
+      const user = await User.findOne({ email });
+      if (!user) {
+        return res
+          .status(404)
+          .json({ success: false, message: "User not found." });
+      }
+      const resetToken = crypto.randomBytes(20).toString("hex");
+      const resetTokenExpiresAt = Date.now() + 1 * 60 * 60 * 1000;
+
+      user.resetPasswordToken = resetToken;
+      user.resetPasswordExpiresAt = resetTokenExpiresAt;
+
+      await user.save();
+
+      await sendPasswordResetEmail(
+        user.email,
+        `${config.get("frontendUrl")}/reset-password/${resetToken}`
+      );
+      res.status(200).json({
+        success: true,
+        message: "Password reset link sent to your email.",
+      });
+    } catch (error) {
+      res.status(400).json({ success: false, message: error.message });
+    }
   }
 }
 
