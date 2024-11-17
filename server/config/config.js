@@ -6,6 +6,8 @@ const _config = {
   databaseUrl: process.env.MONGODB_CONNECTION_STRING,
   jwtSecret: process.env.JWT_SECRET,
   nodeEnv: process.env.NODE_ENV,
+  mailtrapToken: process.env.MAILTRAP_TOKEN,
+  mailtrapEndPoint: process.env.MAILTRAP_ENDPOINT,
 };
 
 const config = {

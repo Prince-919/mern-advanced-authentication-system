@@ -1,6 +1,7 @@
 import { User } from "../models/auth-model.js";
 import bcrypt from "bcryptjs";
 import { generateTokenAndSetCookie } from "../utils/generateTokenAndSetCookie.js";
+import { sendVerificationEmail } from "../mailtrap/emails.js";
 
 class AuthController {
   static async signup(req, res) {
@@ -38,6 +39,8 @@ class AuthController {
       await user.save();
 
       generateTokenAndSetCookie(res, user._id);
+
+      await sendVerificationEmail(user.email, verificationToken);
 
       res.status(201).json({
         success: true,
