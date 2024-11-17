@@ -23,7 +23,6 @@ export const sendVerificationEmail = async (email, verificationToken) => {
     throw new Error(`Error sending verification email: ${error}`);
   }
 };
-
 export const sendWelcomeEmail = async (email, name) => {
   const recipient = [{ email }];
   try {
@@ -40,7 +39,6 @@ export const sendWelcomeEmail = async (email, name) => {
     throw new Error(`Error sending welcome email: ${error}`);
   }
 };
-
 export const sendPasswordResetEmail = async (email, resetURL) => {
   const recipient = [{ email }];
   try {
