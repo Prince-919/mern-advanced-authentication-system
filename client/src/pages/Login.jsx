@@ -9,7 +9,9 @@ const Login = () => {
   const [password, setPassword] = useState("");
   const isLoading = false;
 
-  const submit = (e) => {};
+  const submit = (e) => {
+    e.preventDefault();
+  };
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
