@@ -86,6 +86,12 @@ class AuthController {
     }
   }
   static async login(req, res) {}
+  static async logout(req, res) {
+    res.clearCookie("token");
+    res
+      .status(200)
+      .json({ success: true, message: "Logged out successfully." });
+  }
 }
 
 export default AuthController;
