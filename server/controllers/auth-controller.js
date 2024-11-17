@@ -85,7 +85,39 @@ class AuthController {
       res.status(400).json({ success: false, message: error.message });
     }
   }
-  static async login(req, res) {}
+  static async login(req, res) {
+    const { email, password } = req.body;
+    try {
+      if (!email || !password || email === "" || password === "") {
+        throw new Error("All fields are required.");
+      }
+      const user = await User.findOne({ email });
+      if (!user) {
+        return res
+          .status(400)
+          .json({ success: false, message: "Invalid email or password." });
+      }
+      const isMatch = await bcrypt.compare(password, user.password);
+      if (!isMatch) {
+        return res
+          .status(400)
+          .json({ success: false, message: "Invalid email or password." });
+      }
+      generateTokenAndSetCookie(res, user._id);
+      user.lastLogin = new Date();
+      await user.save();
+      res.status(200).json({
+        success: true,
+        message: "Logged in successfully.",
+        user: {
+          ...user._doc,
+          password: undefined,
+        },
+      });
+    } catch (error) {
+      res.status(400).json({ success: false, message: error.message });
+    }
+  }
   static async logout(req, res) {
     res.clearCookie("token");
     res
