@@ -4,6 +4,8 @@ dotenv.config();
 const _config = {
   port: process.env.PORT,
   databaseUrl: process.env.MONGODB_CONNECTION_STRING,
+  jwtSecret: process.env.JWT_SECRET,
+  nodeEnv: process.env.NODE_ENV,
 };
 
 const config = {
