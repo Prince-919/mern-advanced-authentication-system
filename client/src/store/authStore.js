@@ -29,4 +29,54 @@ export const useAuthStore = create((set) => ({
       throw error;
     }
   },
+  login: async (email, password) => {
+    set({ isLoading: true, error: null });
+    try {
+      const res = await axios.post(`${API_URL}/login`, {
+        email,
+        password,
+      });
+      set({ user: res.data.user, isAuthenticated: true, isLoading: false });
+    } catch (error) {
+      set({
+        error: error.res.data.message || "Error in login",
+        isLoading: false,
+      });
+      throw error;
+    }
+  },
+  verifyEmail: async (code) => {
+    set({ isLoading: true, error: null });
+    try {
+      const res = await axios.post(`${API_URL}/verify-email`, {
+        code,
+      });
+      set({ user: res.data.user, isAuthenticated: true, isLoading: false });
+      return res.data;
+    } catch (error) {
+      set({
+        error: error.res.data.message || "Error verifying email",
+        isLoading: false,
+      });
+      throw error;
+    }
+  },
+  checkAuth: async () => {
+    set({ isCheckingAuth: true, error: null });
+    try {
+      const res = await axios.get(`${API_URL}/check-auth`);
+      set({
+        user: res.data.user,
+        isAuthenticated: true,
+        isCheckingAuth: false,
+      });
+      // eslint-disable-next-line no-unused-vars
+    } catch (error) {
+      set({
+        error: null,
+        isCheckingAuth: false,
+        isAuthenticated: false,
+      });
+    }
+  },
 }));

@@ -1,11 +1,15 @@
 import { useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
+import { useAuthStore } from "../store/authStore";
+import { useNavigate } from "react-router-dom";
+import { toast } from "react-hot-toast";
 
 const EmailVerification = () => {
   const [code, setCode] = useState(["", "", "", "", "", ""]);
   const inputRefs = useRef([]);
+  const navigate = useNavigate();
 
-  const isLoading = false;
+  const { verifyEmail, error, isLoading } = useAuthStore();
 
   const handleChange = (index, value) => {
     const newCode = [...code];
@@ -32,17 +36,23 @@ const EmailVerification = () => {
     }
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const verificationCode = code.join("");
-    console.log("Verification Code Submitted: " + verificationCode);
+    try {
+      await verifyEmail(verificationCode);
+      navigate("/");
+      toast.success("Email verification successful!.");
+    } catch (error) {
+      console.error(error);
+    }
   };
   //   auto submit when all fields are filled
   useEffect(() => {
     if (code.every((digit) => digit !== "")) {
       handleSubmit(new Event("submit"));
     }
-  });
+  }, [code]);
 
   return (
     <div className="max-w-md w-full bg-gray-800 bg-opacity-50 backdrop-filter backdrop-blur-xl rounded-2xl shadow-lg overflow-hidden">
@@ -75,6 +85,7 @@ const EmailVerification = () => {
               );
             })}
           </div>
+          {error && <p className="text-red-500 font-semibold mt-2">{error}</p>}
           <motion.button
             className="w-full py-3 px-4 bg-gradient-to-r from-green-500 to-emerald-600 text-white rounded-lg shadow-lg font-bold hover:from-green-600 hover:to-emerald-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 focus:ring-offset-gray-900 transition duration-200"
             whileHover={{ scale: 1.02 }}
