@@ -1,11 +1,12 @@
 import express from "express";
 import cookieParser from "cookie-parser";
+import cors from "cors";
 import config from "./config/config.js";
 import dbConnect from "./config/database-config.js";
 import authRoutes from "./routes/auth-route.js";
 
 const app = express();
-
+app.use(cors({ origin: config.get("frontendUrl"), credentials: true }));
 app.use(express.json());
 app.use(cookieParser());
 
