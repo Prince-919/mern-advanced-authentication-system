@@ -11,6 +11,7 @@ import RedirectAuthenticatedUser from "./components/RedirectAuthenticatedUser";
 import ProtectedRoute from "./components/ProtectedRoute";
 import LoadingSpinner from "./components/LoadingSpinner";
 import ForgotPassword from "./pages/ForgotPassword";
+import ResetPassword from "./pages/ResetPassword";
 
 const App = () => {
   const { isCheckingAuth, checkAuth } = useAuthStore();
@@ -76,6 +77,14 @@ const App = () => {
           element={
             <RedirectAuthenticatedUser>
               <ForgotPassword />
+            </RedirectAuthenticatedUser>
+          }
+        />
+        <Route
+          path="/reset-password/:token"
+          element={
+            <RedirectAuthenticatedUser>
+              <ResetPassword />
             </RedirectAuthenticatedUser>
           }
         />
