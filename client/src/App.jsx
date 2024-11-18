@@ -9,12 +9,17 @@ import Login from "./pages/Login";
 import EmailVerification from "./pages/EmailVerification";
 import RedirectAuthenticatedUser from "./components/RedirectAuthenticatedUser";
 import ProtectedRoute from "./components/ProtectedRoute";
+import LoadingSpinner from "./components/LoadingSpinner";
 
 const App = () => {
   const { isCheckingAuth, isAuthenticated, checkAuth, user } = useAuthStore();
   useEffect(() => {
     checkAuth();
   }, [checkAuth]);
+
+  if (isCheckingAuth) {
+    return <LoadingSpinner />;
+  }
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-900 via-green-900 to-emerald-900 flex justify-center items-center relative overflow-hidden">
