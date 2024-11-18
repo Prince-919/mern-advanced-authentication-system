@@ -12,6 +12,7 @@ import ProtectedRoute from "./components/ProtectedRoute";
 import LoadingSpinner from "./components/LoadingSpinner";
 import ForgotPassword from "./pages/ForgotPassword";
 import ResetPassword from "./pages/ResetPassword";
+import NotFound from "./components/NorFound";
 
 const App = () => {
   const { isCheckingAuth, checkAuth } = useAuthStore();
@@ -88,6 +89,7 @@ const App = () => {
             </RedirectAuthenticatedUser>
           }
         />
+        <Route path="*" element={<NotFound />} />
       </Routes>
       <Toaster position="top-right" />
     </div>
