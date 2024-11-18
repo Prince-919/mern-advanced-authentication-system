@@ -10,9 +10,10 @@ import EmailVerification from "./pages/EmailVerification";
 import RedirectAuthenticatedUser from "./components/RedirectAuthenticatedUser";
 import ProtectedRoute from "./components/ProtectedRoute";
 import LoadingSpinner from "./components/LoadingSpinner";
+import ForgotPassword from "./pages/ForgotPassword";
 
 const App = () => {
-  const { isCheckingAuth, isAuthenticated, checkAuth, user } = useAuthStore();
+  const { isCheckingAuth, checkAuth } = useAuthStore();
   useEffect(() => {
     checkAuth();
   }, [checkAuth]);
@@ -70,6 +71,14 @@ const App = () => {
           }
         />
         <Route path="/verify-email" element={<EmailVerification />} />
+        <Route
+          path="/forgot-password"
+          element={
+            <RedirectAuthenticatedUser>
+              <ForgotPassword />
+            </RedirectAuthenticatedUser>
+          }
+        />
       </Routes>
       <Toaster position="top-right" />
     </div>
